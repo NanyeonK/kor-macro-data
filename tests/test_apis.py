@@ -3,7 +3,7 @@
 import json
 import logging
 from datetime import datetime
-from connectors import BOKConnector, KOSISConnector, SeoulDataConnector
+from kor_macro.connectors import BOKConnector, KOSISConnector, SeoulDataConnector
 
 # Setup logging
 logging.basicConfig(

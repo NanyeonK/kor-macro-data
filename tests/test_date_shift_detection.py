@@ -5,7 +5,7 @@ Creates intentionally misaligned data to test the integrity checker
 
 import pandas as pd
 import numpy as np
-from data_integrity_checker import DataIntegrityChecker
+from kor_macro.data_integrity_checker import DataIntegrityChecker
 
 def create_test_data_with_shifts():
     """

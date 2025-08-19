@@ -2,7 +2,7 @@
 Example script demonstrating automatic integrity checking during data merging
 """
 
-from data_merger import KoreanMacroDataMerger
+from kor_macro.data_merger import KoreanMacroDataMerger
 import pandas as pd
 
 def main():

@@ -1,7 +1,7 @@
 """Test KB Land web scraper"""
 
 import logging
-from connectors import KBLandConnector
+from kor_macro.connectors import KBLandConnector
 from pathlib import Path
 import json
 

@@ -5,7 +5,7 @@ Demonstrates merging BOK, KB Land, FRED, and KOSIS data with English columns
 
 import pandas as pd
 from pathlib import Path
-from data_merger import KoreanMacroDataMerger
+from kor_macro.data_merger import KoreanMacroDataMerger
 import warnings
 warnings.filterwarnings('ignore')
 

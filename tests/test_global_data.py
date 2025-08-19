@@ -1,7 +1,7 @@
 """Test global economic data connectors"""
 
 import pandas as pd
-from connectors.global_data import (
+from kor_macro.connectors.global_data import (
     FREDConnector, 
     WorldBankConnector,
     IMFConnector,

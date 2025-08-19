@@ -1,6 +1,6 @@
 """Test KB Land data download functionality"""
 
-from connectors.kbland_enhanced import KBLandEnhancedConnector
+from kor_macro.connectors.kbland_enhanced import KBLandEnhancedConnector
 import logging
 
 # Setup logging
