@@ -1,0 +1,116 @@
+KOREAN REAL ESTATE MARKET RESEARCH DATA COLLECTION REPORT
+============================================================
+Collection Date: 2025-08-19 20:57:42
+Data Period: January 2010 - December 2024
+
+
+DEPENDENT VARIABLE
+----------------------------------------
+✓ Downloaded (1 indicators):
+  - KB Housing Price Index (KB Land)
+
+MACROECONOMIC
+----------------------------------------
+✗ Not Downloaded (13 indicators):
+  - GDP Growth Rate (BOK) - No data
+  - Industrial Production Index (BOK) - No data
+  - Leading Index (BOK) - No data
+  - Coincident Index (BOK) - No data
+  - Consumer Price Index (BOK) - No data
+  - Producer Price Index (BOK) - No data
+  - GDP Deflator (BOK) - No data
+  - Unemployment Rate (BOK) - No data
+  - Employment Rate (BOK) - No data
+  - Current Account Balance (BOK) - No data
+  - Export Growth Rate (BOK) - No data
+  - Import Growth Rate (BOK) - No data
+  - Foreign Exchange Reserves (BOK) - No data
+
+FINANCIAL MARKET
+----------------------------------------
+✗ Not Downloaded (16 indicators):
+  - Base Rate (BOK) - No data
+  - 3-Year Treasury Bond (BOK) - No data
+  - 5-Year Treasury Bond (BOK) - No data
+  - 10-Year Treasury Bond (BOK) - No data
+  - CD Rate (91-day) (BOK) - No data
+  - Call Rate (BOK) - No data
+  - Housing Mortgage Rate (BOK) - No data
+  - Household Loan Rate (BOK) - No data
+  - KOSPI Index (KRX) - Not downloaded - KRX API needed
+  - KOSDAQ Index (KRX) - Not downloaded - KRX API needed
+  - Construction Index (KRX) - Not downloaded - KRX API needed
+  - Financial Index (KRX) - Not downloaded - KRX API needed
+  - KRW/USD Exchange Rate (BOK) - No data
+  - KRW/JPY Exchange Rate (BOK) - No data
+  - KRW/CNY Exchange Rate (BOK) - No data
+  - Real Effective Exchange Rate (BOK) - No data
+
+REAL ESTATE MARKET
+----------------------------------------
+✓ Downloaded (5 indicators):
+  - Jeonse Price Index (KB Land)
+  - Monthly Rent Index (KB Land)
+  - Transaction Volume (KB Land)
+  - Market Sentiment (KB Land)
+  - Regional Analysis (KB Land)
+✗ Not Downloaded (7 indicators):
+  - Housing Transaction Volume (MOLIT) - Not downloaded - MOLIT API needed
+  - Apartment Transaction Volume (MOLIT) - Not downloaded - MOLIT API needed
+  - Jeonse Transaction Volume (MOLIT) - Not downloaded - MOLIT API needed
+  - Housing Permits (MOLIT) - Not downloaded - MOLIT API needed
+  - Housing Starts (MOLIT) - Not downloaded - MOLIT API needed
+  - Housing Completions (MOLIT) - Not downloaded - MOLIT API needed
+  - Unsold Housing (MOLIT) - Not downloaded - MOLIT API needed
+
+HOUSEHOLD DEBT
+----------------------------------------
+✗ Not Downloaded (5 indicators):
+  - Household Credit Balance (BOK) - No data
+  - Household Debt Growth Rate (BOK) - No data
+  - Mortgage Balance (BOK) - No data
+  - Jeonse Loan Balance (BOK) - No data
+  - Household Debt-to-GDP Ratio (BOK) - No data
+
+POLICY
+----------------------------------------
+✗ Not Downloaded (10 indicators):
+  - Base Rate Change Dummy (Manual/Government) - Not downloaded - Manual coding required
+  - LTV Regulation Change (Manual/Government) - Not downloaded - Manual coding required
+  - DTI/DSR Regulation Change (Manual/Government) - Not downloaded - Manual coding required
+  - Speculative Area Designation (Manual/Government) - Not downloaded - Manual coding required
+  - Acquisition Tax Rate Change (Manual/Government) - Not downloaded - Manual coding required
+  - Property Tax Rate Change (Manual/Government) - Not downloaded - Manual coding required
+  - Comprehensive Real Estate Tax Change (Manual/Government) - Not downloaded - Manual coding required
+  - Capital Gains Tax Change (Manual/Government) - Not downloaded - Manual coding required
+  - Real Estate Policy Announcements (Manual/Government) - Not downloaded - Manual coding required
+  - Household Debt Management Plans (Manual/Government) - Not downloaded - Manual coding required
+
+SENTIMENT
+----------------------------------------
+✗ Not Downloaded (5 indicators):
+  - Consumer Sentiment Index (BOK) - No data
+  - Housing Price Outlook CSI (BOK) - No data
+  - Housing Purchase Attitude (BOK) - No data
+  - Google Search Trends (Google Trends) - Not downloaded - Google Trends API needed
+  - Economic Policy Uncertainty Index (EPU) - Not downloaded - EPU API needed
+
+POPULATION
+----------------------------------------
+✗ Not Downloaded (4 indicators):
+  - Population Growth Rate (KOSIS) - No data
+  - Working Age Population (KOSIS) - No data
+  - Household Growth Rate (KOSIS) - No data
+  - Single-Person Households (KOSIS) - No data
+
+GLOBAL
+----------------------------------------
+✓ Downloaded (8 indicators):
+  - US Federal Funds Rate (FRED)
+  - US 10-Year Treasury (FRED)
+  - VIX Index (FRED)
+  - DXY Dollar Index (FRED)
+  - US GDP Growth (FRED)
+  - China GDP (FRED)
+  - WTI Oil Price (FRED)
+  - Brent Oil Price (FRED)

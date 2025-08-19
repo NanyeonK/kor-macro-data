@@ -1,0 +1,32 @@
+{
+  "Main Page": {
+    "status": "accessible",
+    "tables": 0,
+    "downloads": 0,
+    "has_navigation": false
+  },
+  "Statistics": {
+    "status": "accessible",
+    "tables": 0,
+    "downloads": 0,
+    "has_navigation": false
+  },
+  "Market Trends": {
+    "status": "accessible",
+    "tables": 0,
+    "downloads": 0,
+    "has_navigation": false
+  },
+  "API Info": {
+    "status": "accessible",
+    "tables": 0,
+    "downloads": 0,
+    "has_navigation": false
+  },
+  "Data Download": {
+    "status": "accessible",
+    "tables": 0,
+    "downloads": 0,
+    "has_navigation": false
+  }
+}

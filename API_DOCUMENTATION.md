@@ -1,0 +1,555 @@
+# Korean Macro Data Package - API Documentation
+
+## Table of Contents
+1. [Core Classes](#core-classes)
+2. [Data Connectors](#data-connectors)
+3. [Data Integrity](#data-integrity)
+4. [Utility Functions](#utility-functions)
+5. [Configuration](#configuration)
+6. [Examples](#examples)
+
+---
+
+## Core Classes
+
+### `KoreanMacroDataMerger`
+
+Main class for merging and aggregating Korean macroeconomic data.
+
+```python
+from kor_macro import KoreanMacroDataMerger
+
+merger = KoreanMacroDataMerger(data_dir='./data')
+```
+
+#### Methods
+
+##### `__init__(data_dir: Union[str, Path] = None)`
+Initialize the data merger.
+
+**Parameters:**
+- `data_dir` (str, Path, optional): Directory containing data files. Defaults to current directory.
+
+---
+
+##### `load_data(filepath: str, name: str, source: str = 'auto') -> pd.DataFrame`
+Load data from a file and standardize column names.
+
+**Parameters:**
+- `filepath` (str): Path to the data file
+- `name` (str): Identifier for this dataset
+- `source` (str): Data source type ('bok', 'kosis', 'fred', 'kb', 'auto')
+
+**Returns:**
+- `pd.DataFrame`: Loaded and standardized dataframe
+
+**Example:**
+```python
+df = merger.load_data('bok_base_rate.csv', 'base_rate', source='bok')
+```
+
+---
+
+##### `create_research_dataset(freq: str = 'M', start_date: str = None, end_date: str = None) -> pd.DataFrame`
+Create a merged research dataset with specified frequency.
+
+**Parameters:**
+- `freq` (str): Frequency for aggregation ('D', 'W', 'M', 'Q', 'Y')
+- `start_date` (str): Start date in 'YYYY-MM-DD' format
+- `end_date` (str): End date in 'YYYY-MM-DD' format
+
+**Returns:**
+- `pd.DataFrame`: Merged dataset with all loaded data
+
+**Example:**
+```python
+monthly_data = merger.create_research_dataset(
+    freq='M',
+    start_date='2020-01-01',
+    end_date='2024-12-31'
+)
+```
+
+---
+
+##### `save_merged_data(filepath: str, format: str = 'csv', run_integrity_check: bool = True) -> Optional[bool]`
+Save merged data with automatic integrity checking.
+
+**Parameters:**
+- `filepath` (str): Output file path
+- `format` (str): Output format ('csv', 'excel', 'parquet')
+- `run_integrity_check` (bool): Whether to run integrity check (default: True)
+
+**Returns:**
+- `bool`: True if integrity check passed, False if issues found, None if skipped
+
+**Example:**
+```python
+result = merger.save_merged_data('output.csv', run_integrity_check=True)
+if result:
+    print("Data validated successfully")
+```
+
+---
+
+##### `aggregate_time_series(df: pd.DataFrame, freq: str, agg_func: Union[str, dict] = 'mean') -> pd.DataFrame`
+Aggregate time series data to specified frequency.
+
+**Parameters:**
+- `df` (pd.DataFrame): Input dataframe with datetime index
+- `freq` (str): Target frequency ('D', 'W', 'M', 'Q', 'Y')
+- `agg_func` (str, dict): Aggregation function or dict of column-specific functions
+
+**Returns:**
+- `pd.DataFrame`: Aggregated dataframe
+
+**Example:**
+```python
+weekly = merger.aggregate_time_series(daily_df, freq='W', agg_func='mean')
+
+# Custom aggregation
+quarterly = merger.aggregate_time_series(
+    daily_df, 
+    freq='Q',
+    agg_func={'price': 'mean', 'volume': 'sum'}
+)
+```
+
+---
+
+## Data Connectors
+
+### `BOKConnector`
+
+Bank of Korea ECOS API connector.
+
+```python
+from kor_macro.connectors import BOKConnector
+
+bok = BOKConnector(api_key='YOUR_API_KEY')
+```
+
+#### Methods
+
+##### `get_base_rate(start_date: str, end_date: str) -> pd.DataFrame`
+Fetch BOK base rate data.
+
+**Parameters:**
+- `start_date` (str): Start date in 'YYYYMMDD' format
+- `end_date` (str): End date in 'YYYYMMDD' format
+
+**Returns:**
+- `pd.DataFrame`: Base rate data
+
+**Example:**
+```python
+base_rate = bok.get_base_rate('20200101', '20241231')
+```
+
+---
+
+##### `get_exchange_rate(currency: str, start_date: str, end_date: str) -> pd.DataFrame`
+Fetch exchange rate data.
+
+**Parameters:**
+- `currency` (str): Currency code ('USD', 'EUR', 'JPY', 'CNY')
+- `start_date` (str): Start date in 'YYYYMMDD' format
+- `end_date` (str): End date in 'YYYYMMDD' format
+
+**Returns:**
+- `pd.DataFrame`: Exchange rate data
+
+---
+
+##### `get_statistics_list() -> pd.DataFrame`
+Get list of all available BOK statistics.
+
+**Returns:**
+- `pd.DataFrame`: Available statistics with codes and descriptions
+
+---
+
+### `KOSISConnector`
+
+Korean Statistical Information Service connector.
+
+```python
+from kor_macro.connectors import KOSISConnector
+
+kosis = KOSISConnector(api_key='YOUR_API_KEY')
+```
+
+#### Methods
+
+##### `get_data(table_id: str, start_period: str, end_period: str) -> pd.DataFrame`
+Fetch data from KOSIS table.
+
+**Parameters:**
+- `table_id` (str): KOSIS table ID (e.g., 'DT_1DA7001')
+- `start_period` (str): Start period in 'YYYYMM' format
+- `end_period` (str): End period in 'YYYYMM' format
+
+**Returns:**
+- `pd.DataFrame`: KOSIS data
+
+---
+
+### `KBLandEnhancedConnector`
+
+KB Land real estate data connector with Excel support.
+
+```python
+from kor_macro.connectors import KBLandEnhancedConnector
+
+kb = KBLandEnhancedConnector()
+```
+
+#### Methods
+
+##### `download_dataset(dataset_type: str, save_dir: str = './data') -> Tuple[bool, str]`
+Download KB Land dataset as Excel file.
+
+**Parameters:**
+- `dataset_type` (str): Type of dataset ('price_index', 'jeonse_index', 'monthly_rent', 'transaction_volume', 'market_sentiment')
+- `save_dir` (str): Directory to save downloaded file
+
+**Returns:**
+- `Tuple[bool, str]`: Success status and file path
+
+---
+
+### `FREDConnector`
+
+Federal Reserve Economic Data connector.
+
+```python
+from kor_macro.connectors import FREDConnector
+
+fred = FREDConnector(api_key='YOUR_API_KEY')
+```
+
+#### Methods
+
+##### `fetch_data(series_id: str, start_date: str, end_date: str) -> pd.DataFrame`
+Fetch FRED time series data.
+
+**Parameters:**
+- `series_id` (str): FRED series ID (e.g., 'DFF' for Fed Funds Rate)
+- `start_date` (str): Start date in 'YYYY-MM-DD' format
+- `end_date` (str): End date in 'YYYY-MM-DD' format
+
+**Returns:**
+- `pd.DataFrame`: FRED data
+
+**Common Series IDs:**
+- `DFF`: Federal Funds Rate
+- `DGS10`: 10-Year Treasury Rate
+- `VIXCLS`: VIX Volatility Index
+- `DCOILWTICO`: WTI Oil Price
+- `DEXKOUS`: KRW/USD Exchange Rate
+
+---
+
+## Data Integrity
+
+### `DataIntegrityChecker`
+
+Validates temporal alignment and data quality.
+
+```python
+from kor_macro.validation import DataIntegrityChecker
+
+checker = DataIntegrityChecker()
+```
+
+#### Methods
+
+##### `check_merge_integrity(merged_file: str) -> None`
+Run comprehensive integrity check on merged dataset.
+
+**Parameters:**
+- `merged_file` (str): Path to merged CSV file
+
+**Example:**
+```python
+checker.check_merge_integrity('korean_macro_complete.csv')
+
+# Check results
+if checker.issues:
+    print(f"Found {len(checker.issues)} issues")
+else:
+    print("All checks passed")
+```
+
+---
+
+##### `check_date_alignment(original_file: str, merged_df: pd.DataFrame, source_name: str) -> None`
+Check if dates are properly aligned between original and merged data.
+
+**Parameters:**
+- `original_file` (str): Path to original data file
+- `merged_df` (pd.DataFrame): Merged dataframe
+- `source_name` (str): Name of the data source
+
+---
+
+## Utility Functions
+
+### `quick_merge_korean_data`
+
+One-line function to merge multiple data sources.
+
+```python
+from kor_macro import quick_merge_korean_data
+
+merged = quick_merge_korean_data(
+    bok_files=['base_rate.csv', 'exchange.csv'],
+    kb_files=['housing.xlsx'],
+    fred_files=['fed_rate.csv'],
+    kosis_files=['employment.csv'],
+    frequency='M',
+    output_file='merged.csv'
+)
+```
+
+**Parameters:**
+- `bok_files` (list): List of BOK data files
+- `kb_files` (list): List of KB Land Excel files
+- `fred_files` (list): List of FRED data files
+- `kosis_files` (list): List of KOSIS data files
+- `frequency` (str): Aggregation frequency ('D', 'W', 'M', 'Q', 'Y')
+- `output_file` (str): Output file path
+
+**Returns:**
+- `pd.DataFrame`: Merged dataframe
+
+---
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file in your project root:
+
+```bash
+# Bank of Korea
+BOK_API_KEY=your_bok_api_key
+
+# KOSIS
+KOSIS_API_KEY=your_kosis_api_key
+
+# Seoul Open Data
+SEOUL_API_KEY=your_seoul_api_key
+
+# FRED
+FRED_API_KEY=your_fred_api_key
+
+# Optional
+EIA_API_KEY=your_eia_api_key
+WORLD_BANK_API_KEY=your_world_bank_key
+```
+
+### Column Mappings
+
+Access and modify column name mappings:
+
+```python
+from kor_macro import KoreanMacroDataMerger
+
+merger = KoreanMacroDataMerger()
+
+# View current mappings
+print(merger.COLUMN_MAPPINGS)
+
+# Add custom mappings
+merger.COLUMN_MAPPINGS.update({
+    '사용자정의': 'custom_field',
+    '새로운열': 'new_column'
+})
+```
+
+---
+
+## Examples
+
+### Complete Workflow Example
+
+```python
+from kor_macro import KoreanMacroDataMerger
+from kor_macro.connectors import BOKConnector, FREDConnector
+import pandas as pd
+
+# 1. Initialize connectors
+bok = BOKConnector()
+fred = FREDConnector()
+
+# 2. Fetch fresh data
+base_rate = bok.get_base_rate('20200101', '20241231')
+fed_rate = fred.fetch_data('DFF', '2020-01-01', '2024-12-31')
+
+# 3. Save fetched data
+base_rate.to_csv('base_rate.csv', index=False)
+fed_rate.to_csv('fed_rate.csv', index=False)
+
+# 4. Initialize merger
+merger = KoreanMacroDataMerger()
+
+# 5. Load data
+merger.load_data('base_rate.csv', 'base_rate', source='bok')
+merger.load_data('fed_rate.csv', 'fed_rate', source='fred')
+
+# 6. Create merged dataset
+merged = merger.create_research_dataset(
+    freq='M',
+    start_date='2020-01-01',
+    end_date='2024-12-31'
+)
+
+# 7. Add derived features
+merged['rate_spread'] = merged['value_base_rate'] - merged['value_fed_rate']
+
+# 8. Save with integrity check
+result = merger.save_merged_data('analysis_data.csv')
+
+if result:
+    print("✅ Data successfully merged and validated")
+    
+    # 9. Analyze correlations
+    correlation = merged[['value_base_rate', 'value_fed_rate']].corr()
+    print(f"Correlation: {correlation.iloc[0, 1]:.3f}")
+```
+
+### Handling Different Frequencies
+
+```python
+# Daily to Monthly
+daily_df = pd.read_csv('daily_prices.csv')
+monthly = merger.aggregate_time_series(daily_df, freq='M', agg_func='mean')
+
+# Quarterly data with forward fill
+quarterly_df = pd.read_csv('gdp_quarterly.csv')
+monthly_filled = merger.aggregate_time_series(
+    quarterly_df, 
+    freq='M',
+    agg_func='ffill'  # Forward fill for quarterly data
+)
+
+# Mixed aggregation
+mixed = merger.aggregate_time_series(
+    daily_df,
+    freq='W',
+    agg_func={
+        'price': 'mean',
+        'volume': 'sum',
+        'high': 'max',
+        'low': 'min'
+    }
+)
+```
+
+### Error Handling
+
+```python
+from kor_macro import KoreanMacroDataMerger
+from kor_macro.exceptions import DataIntegrityError, MergeError
+
+merger = KoreanMacroDataMerger()
+
+try:
+    # Load and merge data
+    merger.load_data('data.csv', 'test', source='bok')
+    merged = merger.create_research_dataset()
+    
+    # Save with integrity check
+    result = merger.save_merged_data('output.csv')
+    
+    if result is False:
+        raise DataIntegrityError("Integrity check failed")
+        
+except FileNotFoundError as e:
+    print(f"File not found: {e}")
+except DataIntegrityError as e:
+    print(f"Data integrity issue: {e}")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+```
+
+### Custom Data Sources
+
+```python
+# Add custom data source
+class CustomConnector(BaseConnector):
+    def fetch_data(self, params):
+        # Custom implementation
+        return pd.DataFrame(data)
+
+# Use with merger
+custom = CustomConnector()
+data = custom.fetch_data({'param': 'value'})
+data.to_csv('custom_data.csv')
+
+merger.load_data('custom_data.csv', 'custom', source='auto')
+```
+
+---
+
+## Performance Tips
+
+1. **Use Parquet for large datasets**
+   ```python
+   merger.save_merged_data('large_data.parquet', format='parquet')
+   ```
+
+2. **Disable integrity check for performance**
+   ```python
+   merger.save_merged_data('data.csv', run_integrity_check=False)
+   ```
+
+3. **Cache API responses**
+   ```python
+   import functools
+   
+   @functools.lru_cache(maxsize=100)
+   def cached_fetch(series_id, start, end):
+       return fred.fetch_data(series_id, start, end)
+   ```
+
+4. **Use chunking for very large files**
+   ```python
+   for chunk in pd.read_csv('huge_file.csv', chunksize=10000):
+       process(chunk)
+   ```
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+1. **API Key Errors**
+   - Ensure `.env` file exists and contains valid keys
+   - Check environment variable names match exactly
+
+2. **Date Format Issues**
+   - BOK uses 'YYYYMMDD'
+   - FRED uses 'YYYY-MM-DD'
+   - KOSIS uses 'YYYYMM'
+
+3. **Memory Issues with Large Datasets**
+   - Use `dtype` optimization
+   - Process in chunks
+   - Use Parquet format
+
+4. **Integrity Check Failures**
+   - Review `data_integrity_report.txt`
+   - Check for date shifts
+   - Verify frequency conversions
+
+---
+
+## Support
+
+For additional help:
+- GitHub Issues: https://github.com/yourusername/kor-macro-data/issues
+- Documentation: https://kor-macro-data.readthedocs.io
+- Examples: See `/examples` directory in the repository

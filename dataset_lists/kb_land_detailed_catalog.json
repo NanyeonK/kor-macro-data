@@ -1,0 +1,124 @@
+{
+  "price_index": {
+    "name_en": "KB Housing Price Index",
+    "name_kr": "KB주택가격지수",
+    "url": "https://data.kbland.kr/kbstats/wmh",
+    "format": "Excel",
+    "frequency": "Monthly",
+    "data_types": [
+      "Apartment price index (아파트)",
+      "House price index (단독주택)",
+      "Row house price index (연립주택)",
+      "National composite index (전국종합)"
+    ]
+  },
+  "jeonse_index": {
+    "name_en": "KB Jeonse Price Index",
+    "name_kr": "KB전세가격지수",
+    "url": "https://data.kbland.kr/kbstats/wjs",
+    "format": "Excel",
+    "frequency": "Monthly",
+    "data_types": [
+      "Jeonse price index (전세가격지수)",
+      "Jeonse ratio (전세가율)",
+      "Regional jeonse trends"
+    ]
+  },
+  "monthly_rent": {
+    "name_en": "KB Monthly Rent Index",
+    "name_kr": "KB월세가격지수",
+    "url": "https://data.kbland.kr/kbstats/wmr",
+    "format": "Excel",
+    "frequency": "Monthly",
+    "data_types": [
+      "Monthly rent index",
+      "Deposit conversion rate",
+      "Regional rent trends"
+    ]
+  },
+  "transaction_volume": {
+    "name_en": "Real Estate Transaction Volume",
+    "name_kr": "부동산거래량",
+    "url": "https://data.kbland.kr/kbstats/wmt",
+    "format": "Excel/CSV",
+    "frequency": "Monthly",
+    "data_types": [
+      "Transaction count by region",
+      "Transaction volume by type",
+      "YoY comparison"
+    ]
+  },
+  "market_sentiment": {
+    "name_en": "Market Sentiment Index",
+    "name_kr": "시장심리지수",
+    "url": "https://data.kbland.kr/kbstats/wms",
+    "format": "Excel",
+    "frequency": "Monthly",
+    "data_types": [
+      "Consumer sentiment",
+      "Expert outlook",
+      "Price expectation"
+    ]
+  },
+  "regional_analysis": {
+    "name_en": "Regional Market Analysis",
+    "name_kr": "지역별 시장분석",
+    "url": "https://data.kbland.kr/kbstats/wra",
+    "format": "Excel",
+    "frequency": "Monthly",
+    "data_types": [
+      "Seoul 25 districts",
+      "Gyeonggi 31 cities",
+      "Metropolitan cities",
+      "Price rankings"
+    ]
+  },
+  "apartment_ranking": {
+    "name_en": "Apartment Complex Rankings",
+    "name_kr": "아파트 단지 순위",
+    "url": "https://data.kbland.kr/kbstats/war",
+    "format": "CSV",
+    "frequency": "Weekly",
+    "data_types": [
+      "Top 100 by price",
+      "Top gainers/losers",
+      "Transaction leaders"
+    ]
+  },
+  "office_retail": {
+    "name_en": "Office & Retail Market",
+    "name_kr": "오피스/상가 시장",
+    "url": "https://data.kbland.kr/kbstats/wor",
+    "format": "Excel",
+    "frequency": "Quarterly",
+    "data_types": [
+      "Office rent index",
+      "Retail space prices",
+      "Vacancy rates"
+    ]
+  },
+  "land_price": {
+    "name_en": "Land Price Index",
+    "name_kr": "토지가격지수",
+    "url": "https://data.kbland.kr/kbstats/wlp",
+    "format": "Excel",
+    "frequency": "Quarterly",
+    "data_types": [
+      "Residential land",
+      "Commercial land",
+      "Industrial land"
+    ]
+  },
+  "policy_impact": {
+    "name_en": "Policy Impact Analysis",
+    "name_kr": "정책영향분석",
+    "url": "https://data.kbland.kr/kbstats/wpi",
+    "format": "PDF/Excel",
+    "frequency": "As needed",
+    "data_types": [
+      "Tax policy effects",
+      "Regulation impacts",
+      "Market interventions"
+    ]
+  }
+}
