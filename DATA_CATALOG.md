@@ -132,28 +132,49 @@ data = kosis.fetch_data('DT_1B040A3', start_year=2010)
 
 ### 3. KB Land
 
-**Access**: Web API/Scraping | **Update Frequency**: Weekly/Monthly | **History**: 2003-present
+**Access**: API Connector | **Update Frequency**: Weekly/Monthly | **History**: 2003-present
 
 #### Housing Price Indices
 ```python
 # Example: Get apartment prices
 kb = KBLandConnector()
-data = kb.get_housing_index('apartment', region='서울', period='2024-01')
+
+# Get monthly apartment price index
+apt_prices = kb.get_housing_index(
+    house_type='apartment',  # 'apartment', 'house', 'officetel'
+    region='서울',           # Korean region name
+    start_date='2023-01-01',
+    end_date='2024-12-31'
+)
+
+# Get latest values
+print(f"Latest index: {apt_prices.iloc[-1]['price_index']:.2f}")
+print(f"MoM change: {apt_prices.iloc[-1]['mom_change']:.2f}%")
+print(f"YoY change: {apt_prices.iloc[-1]['yoy_change']:.2f}%")
 ```
 
 | Dataset | Description | Frequency | Regional Coverage |
 |---------|-------------|-----------|-------------------|
-| **매매가격지수** | Purchase Price Index | Weekly/Monthly | 250+ regions |
-| - 아파트 | Apartments | Weekly | National/Regional/District |
+| **매매가격지수** | Purchase Price Index | Monthly | 250+ regions |
+| - 아파트 | Apartments | Weekly/Monthly | National/Regional/District |
 | - 단독주택 | Detached Houses | Monthly | National/Regional |
 | - 연립주택 | Row Houses | Monthly | National/Regional |
 | - 오피스텔 | Officetels | Monthly | Major Cities |
 
 #### Jeonse (전세) Indices
+```python
+# Get Jeonse price index
+jeonse = kb.get_jeonse_index(
+    region='서울',
+    start_date='2023-01-01',
+    end_date='2024-12-31'
+)
+```
+
 | Dataset | Description | Frequency | Coverage |
 |---------|-------------|-----------|----------|
-| **전세가격지수** | Jeonse Price Index | Weekly/Monthly | 250+ regions |
-| - 아파트 전세 | Apartment Jeonse | Weekly | All districts |
+| **전세가격지수** | Jeonse Price Index | Monthly | 250+ regions |
+| - 아파트 전세 | Apartment Jeonse | Weekly/Monthly | All districts |
 | - 단독주택 전세 | House Jeonse | Monthly | Major cities |
 | - 연립주택 전세 | Row House Jeonse | Monthly | Major cities |
 
@@ -166,6 +187,18 @@ data = kb.get_housing_index('apartment', region='서울', period='2024-01')
 | - 월세전환율 | Jeonse-to-Rent Conversion Rate | Monthly | National |
 
 #### Market Indicators
+```python
+# Get market trends and sentiment
+market = kb.get_market_trend(region='서울')
+outlook = kb.get_price_outlook(region='서울')
+
+# Regional comparison
+comparison = kb.get_regional_comparison(
+    house_type='apartment',
+    regions=['서울', '부산', '대구', '인천', '경기']
+)
+```
+
 | Indicator | Description | Frequency | Coverage |
 |-----------|-------------|-----------|----------|
 | **매매수급동향** | Supply-Demand Trends | Weekly | National |

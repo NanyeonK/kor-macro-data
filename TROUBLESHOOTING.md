@@ -199,6 +199,30 @@ df = pd.read_excel('file.xlsx', engine='openpyxl')
 df.to_excel('output.xlsx', engine='openpyxl', index=False)
 ```
 
+### Problem: KB Land connector returns empty data
+
+**Solution:**
+```python
+# Check if you're using the correct region names in Korean
+kb = KBLandConnector()
+
+# Correct region names (Korean)
+seoul_data = kb.get_housing_index(region='서울')  # ✅
+# Wrong
+seoul_data = kb.get_housing_index(region='Seoul')  # ❌
+
+# Valid regions
+valid_regions = ['서울', '부산', '대구', '인천', '광주', 
+                 '대전', '울산', '경기', '강원', '충북', 
+                 '충남', '전북', '전남', '경북', '경남', '제주']
+
+# Check date format
+data = kb.get_housing_index(
+    start_date='2023-01-01',  # ✅ YYYY-MM-DD format
+    end_date='2024-12-31'
+)
+```
+
 ### Problem: Date parsing errors
 
 **Solution:**

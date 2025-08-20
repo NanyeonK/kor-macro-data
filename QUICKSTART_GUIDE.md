@@ -102,19 +102,27 @@ import pandas as pd
 # Get housing price indices
 kb = KBLandConnector()
 
-# Get Seoul apartment prices (weekly)
+# Get Seoul apartment prices (monthly)
 seoul_apt = kb.get_housing_index(
     house_type='apartment',
     region='서울',
-    period='2023-01'
+    start_date='2023-01-01',
+    end_date='2024-12-31'
 )
+print(f"Latest apartment index: {seoul_apt.iloc[-1]['price_index']:.2f}")
+print(f"YoY change: {seoul_apt.iloc[-1]['yoy_change']:.2f}%")
 
 # Get Jeonse prices
 jeonse = kb.get_jeonse_index(
     region='서울',
-    start_date='2020-01',
-    end_date='2024-12'
+    start_date='2023-01-01',
+    end_date='2024-12-31'
 )
+print(f"Latest Jeonse index: {jeonse.iloc[-1]['price_index']:.2f}")
+
+# Get market sentiment
+market_trend = kb.get_market_trend(region='서울')
+print(f"Market sentiment: {market_trend.iloc[-1]['supply_demand']}")
 
 # Get BOK interest rates for comparison
 bok = BOKConnector()

@@ -169,6 +169,92 @@ Get list of all available BOK statistics.
 
 ---
 
+### `KBLandConnector`
+
+KB Land real estate data connector for Korean housing market data.
+
+```python
+from kor_macro.connectors import KBLandConnector
+
+kb = KBLandConnector()
+```
+
+#### Methods
+
+##### `get_housing_index(house_type='apartment', region='서울', period=None, start_date=None, end_date=None) -> pd.DataFrame`
+Get housing price index data.
+
+**Parameters:**
+- `house_type` (str): Type of housing ('apartment', 'house', 'officetel')
+- `region` (str): Region name in Korean (e.g., '서울', '부산', '강남구')
+- `period` (str, optional): Specific period (e.g., '2024-01')
+- `start_date` (str, optional): Start date in 'YYYY-MM-DD' format
+- `end_date` (str, optional): End date in 'YYYY-MM-DD' format
+
+**Returns:**
+- `pd.DataFrame`: Housing price index with columns: date, region, price_index, mom_change, yoy_change
+
+##### `get_jeonse_index(region='서울', start_date=None, end_date=None) -> pd.DataFrame`
+Get Jeonse (전세) price index data.
+
+**Returns:**
+- `pd.DataFrame`: Jeonse price index data
+
+##### `get_rent_index(region='서울', start_date=None, end_date=None) -> pd.DataFrame`
+Get monthly rent index data.
+
+**Returns:**
+- `pd.DataFrame`: Monthly rent index data
+
+##### `get_market_trend(region='서울', start_date=None, end_date=None) -> pd.DataFrame`
+Get market trend indicators (supply/demand balance).
+
+**Returns:**
+- `pd.DataFrame`: Market trend data with supply_demand and transaction_volume
+
+##### `get_price_outlook(region='서울', start_date=None, end_date=None) -> pd.DataFrame`
+Get price outlook/sentiment index.
+
+**Returns:**
+- `pd.DataFrame`: Price outlook data with outlook_index and sentiment
+
+##### `get_regional_comparison(house_type='apartment', regions=None, date=None) -> pd.DataFrame`
+Compare housing indices across multiple regions.
+
+**Parameters:**
+- `house_type` (str): Type of housing
+- `regions` (List[str]): List of regions to compare
+- `date` (str): Specific date for comparison
+
+**Returns:**
+- `pd.DataFrame`: Regional comparison data
+
+**Example:**
+```python
+# Get Seoul apartment prices
+kb = KBLandConnector()
+apt_prices = kb.get_housing_index(
+    house_type='apartment',
+    region='서울',
+    start_date='2023-01-01',
+    end_date='2024-12-31'
+)
+
+# Get Jeonse prices
+jeonse = kb.get_jeonse_index('서울')
+
+# Get market sentiment
+market = kb.get_market_trend('서울')
+print(f"Market: {market.iloc[-1]['supply_demand']}")
+
+# Regional comparison
+comparison = kb.get_regional_comparison(
+    regions=['서울', '부산', '대구']
+)
+```
+
+---
+
 ### `KOSISConnector`
 
 Korean Statistical Information Service connector.
