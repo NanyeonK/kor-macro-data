@@ -45,49 +45,68 @@ pip install git+https://github.com/yourusername/kor-macro-data.git
 
 ## 🚀 Quick Start
 
+### Step 1: Install Package
+```bash
+pip install git+https://github.com/NanyeonK/kor-macro-data.git
+```
+
+### Step 2: Set API Keys
+```bash
+# Create .env file with your API keys
+BOK_API_KEY=your_bok_key_here      # Required - get from https://ecos.bok.or.kr/api/
+KOSIS_API_KEY=your_kosis_key_here  # Required - get from https://kosis.kr/openapi/
+FRED_API_KEY=your_fred_key_here    # Optional - get from https://fred.stlouisfed.org/
+```
+
+### Step 3: Start Using Data
 ```python
-from kor_macro import KoreanMacroDataMerger, BOKConnector
+from kor_macro import KoreanMacroDataMerger
+from kor_macro.connectors import BOKConnector, KBLandConnector
 
-# Fetch data from Bank of Korea
-bok = BOKConnector()  # Uses API key from environment
-base_rate = bok.get_base_rate('20200101', '20241231')
+# Example: Analyze Korean housing market
+kb = KBLandConnector()
+housing_prices = kb.get_housing_index('apartment', region='서울', period='2024-01')
 
-# Initialize merger and create research dataset
+bok = BOKConnector()
+interest_rates = bok.get_base_rate('2020-01-01', '2024-12-31')
+
+# Merge and analyze
 merger = KoreanMacroDataMerger()
-merger.load_data('base_rate.csv', 'base_rate', source='bok')
-merger.load_data('exchange_rate.csv', 'usd_krw', source='bok')
+merger.load_dataframe(housing_prices, 'housing')
+merger.load_dataframe(interest_rates, 'rates')
 
-# Create merged dataset with automatic integrity checking
+# Create research dataset with automatic validation
 monthly_data = merger.create_research_dataset(freq='M')
-merger.save_merged_data('output.csv')  # Automatic validation
+merger.save_merged_data('korea_housing_analysis.csv')
 
 print("✅ Data merged and validated successfully!")
 ```
 
-## 📊 Supported Data Sources
+📚 **Need more examples?** Check our [Quick Start Guide](QUICKSTART_GUIDE.md) for detailed tutorials!
 
-### Bank of Korea (BOK) - 863+ Economic Statistics
-- Base rates, exchange rates, money supply
-- CPI, GDP, trade statistics
-- Housing and real estate indices
+## 📊 10 Integrated Data Sources
 
-### KOSIS - Korean Statistical Information Service
-- Employment and labor statistics
-- Population and demographics
-- Regional economic indicators
+We provide seamless access to **10 major economic databases** with over **2,000+ indicators**. See [DATA_CATALOG.md](DATA_CATALOG.md) for complete listings.
 
-### KB Land - Real Estate Market Data
-- Housing price indices (apartments, houses)
-- Jeonse (전세) price indices
-- Monthly rent indices
-- Transaction volumes
-- Market sentiment indicators
+### 🇰🇷 Korean Data Sources (4)
+| Source | Indicators | Update Frequency | Coverage |
+|--------|------------|------------------|----------|
+| **Bank of Korea** | 863+ series | Real-time/Daily | 1960-present |
+| **KOSIS** | 1,000+ tables | Monthly | 1970-present |
+| **KB Land** | 100+ indices | Weekly/Monthly | 2003-present |
+| **Seoul Open Data** | 50+ datasets | Real-time/Daily | 2010-present |
 
-### FRED - Global Economic Indicators
-- US Federal Reserve rates
-- Treasury yields, VIX
-- Commodity prices (oil, gold)
-- Global GDP and trade data
+### 🌍 Global Data Sources (6)
+| Source | Indicators | Update Frequency | Coverage |
+|--------|------------|------------------|----------|
+| **EIA** | 200+ energy series | Daily/Weekly | 1986-present |
+| **FRED** | 500,000+ series | Real-time | 1947-present |
+| **World Bank** | 1,000+ indicators | Annual | 1960-present |
+| **IMF** | 500+ series | Quarterly | 1980-present |
+| **OECD** | 300+ datasets | Monthly | 1970-present |
+| **ECB** | 200+ series | Daily | 1999-present |
+
+📊 **Full details**: See [Data Catalog](DATA_CATALOG.md) for complete list of available indicators
 
 ## 🔧 Core Functionality
 
@@ -200,10 +219,17 @@ Get API keys from:
 
 ## 📚 Documentation
 
-- [API Documentation](https://github.com/yourusername/kor-macro-data/blob/main/API_DOCUMENTATION.md)
-- [Data Source Catalog](https://github.com/yourusername/kor-macro-data/blob/main/DATA_CATALOG.md)
-- [Usage Examples](https://github.com/yourusername/kor-macro-data/blob/main/examples/)
-- [Contributing Guide](https://github.com/yourusername/kor-macro-data/blob/main/CONTRIBUTING.md)
+### Essential Guides
+- **[Quick Start Guide](QUICKSTART_GUIDE.md)** - Get started in 5 minutes with practical examples
+- **[Data Catalog](DATA_CATALOG.md)** - Complete list of all 10 data sources and available indicators
+- **[API Documentation](API_DOCUMENTATION.md)** - Detailed API reference for all methods
+- **[Troubleshooting Guide](TROUBLESHOOTING.md)** - Solutions to common problems and FAQ
+
+### Additional Resources
+- **[Usage Examples](USAGE_EXAMPLES.md)** - Code examples for each connector
+- **[Examples Directory](examples/)** - Runnable example scripts
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+- **[Change Log](CHANGELOG.md)** - Version history and updates
 
 ## 🧪 Testing
 

@@ -8,7 +8,10 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime
 from pathlib import Path
 import requests
-from bs4 import BeautifulSoup
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None  # BeautifulSoup is optional for web scraping
 # Selenium imports - optional for dynamic content
 try:
     from selenium import webdriver

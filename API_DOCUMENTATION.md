@@ -218,6 +218,79 @@ Download KB Land dataset as Excel file.
 
 ---
 
+### `EIAConnector`
+
+U.S. Energy Information Administration data connector for energy market data.
+
+```python
+from kor_macro.connectors import EIAConnector
+
+eia = EIAConnector()
+```
+
+#### Methods
+
+##### `get_wti_crude_price(start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get WTI crude oil spot prices.
+
+**Returns:**
+- `pd.DataFrame`: Daily WTI prices with date and value columns
+
+##### `get_brent_crude_price(start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get Brent crude oil spot prices.
+
+**Returns:**
+- `pd.DataFrame`: Daily Brent prices with date and value columns
+
+##### `get_henry_hub_gas_price(start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get Henry Hub natural gas spot prices.
+
+**Returns:**
+- `pd.DataFrame`: Daily natural gas prices with date and value columns
+
+##### `get_us_gasoline_price(start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get US regular gasoline retail prices.
+
+**Returns:**
+- `pd.DataFrame`: Weekly gasoline prices with date and value columns
+
+##### `get_korea_energy_data(data_type: str = 'petroleum_consumption', start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get Korea energy consumption and generation data.
+
+**Parameters:**
+- `data_type` (str): Type of data ('petroleum_consumption' or 'electricity_generation')
+- `start_date` (str): Start date in 'YYYY-MM-DD' format
+- `end_date` (str): End date in 'YYYY-MM-DD' format
+
+**Returns:**
+- `pd.DataFrame`: Annual Korea energy data
+
+##### `get_crude_oil_inventories(start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get US crude oil inventory levels.
+
+**Returns:**
+- `pd.DataFrame`: Weekly inventory data with date and value columns
+
+##### `get_renewable_generation(start_date: str = '2010-01-01', end_date: str = None) -> pd.DataFrame`
+Get US renewable electricity generation data.
+
+**Returns:**
+- `pd.DataFrame`: Monthly renewable generation data
+
+**Example:**
+```python
+# Get WTI crude prices
+wti = eia.get_wti_crude_price('2023-01-01', '2024-01-01')
+
+# Get Korea petroleum consumption
+korea_oil = eia.get_korea_energy_data('petroleum_consumption', '2015-01-01')
+
+# Get US gasoline prices
+gas_prices = eia.get_us_gasoline_price('2023-01-01')
+```
+
+---
+
 ### `FREDConnector`
 
 Federal Reserve Economic Data connector.

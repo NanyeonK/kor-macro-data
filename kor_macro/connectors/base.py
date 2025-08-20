@@ -6,10 +6,13 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Dict, List, Optional, Any
 import requests
-from tenacity import retry, stop_after_attempt, wait_exponential
-from dotenv import load_dotenv
-
-load_dotenv()
+# from tenacity import retry, stop_after_attempt, wait_exponential  # Optional dependency
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    # python-dotenv is optional, environment variables can be set directly
+    pass
 
 class BaseConnector(ABC):
     """Abstract base class for API connectors"""
@@ -49,7 +52,6 @@ class BaseConnector(ABC):
             time.sleep(self.rate_limit_delay - time_since_last)
         self.last_request_time = time.time()
     
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
     def _make_request(self, url: str, params: Optional[Dict] = None, 
                      method: str = 'GET', data: Optional[Dict] = None) -> Dict:
         """Make HTTP request with retry logic"""
