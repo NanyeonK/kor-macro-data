@@ -1,5 +1,34 @@
 # Korean Macro Data Package - API Documentation
 
+## 🚨 CRITICAL UPDATES - Connector Standardization
+
+**All connectors have been updated to resolve critical inconsistencies:**
+
+### ✅ Fixed Issues
+1. **DataFrame Return Format**: All methods now return `pandas.DataFrame` objects instead of dictionaries
+2. **Standardized Parameters**: All methods use `start_date`/`end_date` (YYYY-MM-DD format) instead of mixed formats
+3. **Consistent Structure**: All DataFrames have standardized columns: `['date', 'value', ...]`
+4. **Error Handling**: Proper fallback to empty DataFrames on errors
+5. **Analysis-Ready**: Direct compatibility with plotting and statistical analysis
+
+### 🔧 Before vs After
+
+**OLD FORMAT (Dictionary)**:
+```python
+result = bok.get_base_rate('20200101', '20241231')
+# Returns: {'success': True, 'dataset_id': '722Y001', 'data': [...]}
+# Required manual DataFrame conversion
+```
+
+**NEW FORMAT (DataFrame)**:
+```python
+df = bok.get_base_rate('2020-01-01', '2024-12-31')
+# Returns: pandas.DataFrame with columns ['date', 'value', 'unit', 'item']
+# Direct analysis: df.plot(x='date', y='value')
+```
+
+---
+
 ## Table of Contents
 1. [Core Classes](#core-classes)
 2. [Data Connectors](#data-connectors)
@@ -131,19 +160,43 @@ bok = BOKConnector(api_key='YOUR_API_KEY')
 
 #### Methods
 
-##### `get_base_rate(start_date: str, end_date: str) -> pd.DataFrame`
-Fetch BOK base rate data.
+##### `fetch_data(dataset_id: str, start_date: str = '2020-01-01', end_date: str = None, period: str = 'M', **params) -> pd.DataFrame`
+Fetch data from BOK ECOS API.
 
 **Parameters:**
-- `start_date` (str): Start date in 'YYYYMMDD' format
-- `end_date` (str): End date in 'YYYYMMDD' format
+- `dataset_id` (str): Statistics code (e.g., '722Y001' for base rate)
+- `start_date` (str): Start date in 'YYYY-MM-DD' format (default: '2020-01-01')
+- `end_date` (str): End date in 'YYYY-MM-DD' format (default: current date)
+- `period` (str): Period type ('D': Daily, 'M': Monthly, 'Q': Quarterly, 'Y': Yearly)
 
 **Returns:**
-- `pd.DataFrame`: Base rate data
+- `pd.DataFrame`: DataFrame with standardized columns: 'date', 'value', and optional 'unit', 'item'
 
 **Example:**
 ```python
-base_rate = bok.get_base_rate('20200101', '20241231')
+data = bok.fetch_data('722Y001', '2024-01-01', '2024-12-31', 'M')
+print(data.head())
+#         date  value unit       item
+# 0 2024-01-01   3.50    %  Base Rate
+# 1 2024-02-01   3.25    %  Base Rate
+```
+
+---
+
+##### `get_base_rate(start_date: str = '2020-01-01', end_date: str = None) -> pd.DataFrame`
+Fetch BOK base rate data.
+
+**Parameters:**
+- `start_date` (str): Start date in 'YYYY-MM-DD' format
+- `end_date` (str): End date in 'YYYY-MM-DD' format
+
+**Returns:**
+- `pd.DataFrame`: Base rate data with standardized columns
+
+**Example:**
+```python
+base_rate = bok.get_base_rate('2024-01-01', '2024-12-31')
+print(f"Latest rate: {base_rate.iloc[-1]['value']:.2f}%")
 ```
 
 ---
@@ -267,16 +320,25 @@ kosis = KOSISConnector(api_key='YOUR_API_KEY')
 
 #### Methods
 
-##### `get_data(table_id: str, start_period: str, end_period: str) -> pd.DataFrame`
-Fetch data from KOSIS table.
+##### `fetch_data(table_id: str, start_date: str = '2020-01-01', end_date: str = None, **params) -> pd.DataFrame`
+Fetch data from KOSIS API.
 
 **Parameters:**
-- `table_id` (str): KOSIS table ID (e.g., 'DT_1DA7001')
-- `start_period` (str): Start period in 'YYYYMM' format
-- `end_period` (str): End period in 'YYYYMM' format
+- `table_id` (str): KOSIS table ID (e.g., 'DT_1B040A3')
+- `start_date` (str): Start date in 'YYYY-MM-DD' format
+- `end_date` (str): End date in 'YYYY-MM-DD' format
 
 **Returns:**
-- `pd.DataFrame`: KOSIS data
+- `pd.DataFrame`: DataFrame with standardized columns: 'date', 'value', and optional 'item', 'category', 'unit'
+
+**Example:**
+```python
+data = kosis.fetch_data('DT_1B040A3', '2020-01-01', '2024-12-31')
+print(data.head())
+#         date      value           item  category    unit
+# 0 2020-01-01   51600000  Total Population  National  Persons
+# 1 2021-01-01   51700000  Total Population  National  Persons
+```
 
 ---
 
