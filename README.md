@@ -55,34 +55,31 @@ pip install git+https://github.com/NanyeonK/kor-macro-data.git
 # Create .env file with your API keys
 BOK_API_KEY=your_bok_key_here      # Required - get from https://ecos.bok.or.kr/api/
 KOSIS_API_KEY=your_kosis_key_here  # Required - get from https://kosis.kr/openapi/
-FRED_API_KEY=your_fred_key_here    # Optional - get from https://fred.stlouisfed.org/
 ```
 
 ### Step 3: Start Using Data
 ```python
-from kor_macro import KoreanMacroDataMerger
-from kor_macro.connectors import BOKConnector, KBLandConnector
+from kor_macro.connectors.bok import BOKConnector
+from kor_macro.connectors.kosis import KOSISConnector
+import os
 
-# Example: Analyze Korean housing market
-kb = KBLandConnector()
-housing_prices = kb.get_housing_index('apartment', region='서울', period='2024-01')
+# Set API keys
+os.environ['BOK_API_KEY'] = 'your_bok_api_key'
+os.environ['KOSIS_API_KEY'] = 'your_kosis_api_key'
 
+# Initialize connectors
 bok = BOKConnector()
-interest_rates = bok.get_base_rate('2020-01-01', '2024-12-31')
+kosis = KOSISConnector()
 
-# Merge and analyze
-merger = KoreanMacroDataMerger()
-merger.load_dataframe(housing_prices, 'housing')
-merger.load_dataframe(interest_rates, 'rates')
+# Get economic indicators
+base_rate = bok.get_base_rate('2020-01-01', '2024-12-31')
+cpi = bok.get_cpi('2020-01-01', '2024-12-31')
+gdp = bok.get_gdp('nominal', '2020-01-01', '2024-12-31')
 
-# Create research dataset with automatic validation
-monthly_data = merger.create_research_dataset(freq='M')
-merger.save_merged_data('korea_housing_analysis.csv')
-
-print("✅ Data merged and validated successfully!")
+print("✅ Data downloaded successfully!")
 ```
 
-📚 **Need more examples?** Check our [Quick Start Guide](QUICKSTART_GUIDE.md) for detailed tutorials!
+📚 **Complete Example**: Check [`example.ipynb`](example.ipynb) for comprehensive data download, merging, and integrity checking demonstrations!
 
 ## 📊 10 Integrated Data Sources
 
